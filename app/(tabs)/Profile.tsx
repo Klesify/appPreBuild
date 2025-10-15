@@ -169,7 +169,7 @@ const Profile = () => {
 
               <Pressable
                 onPress={onSubmit}
-                className="w-[90%] items-center mt-10 bg-[#AC7F5E] rounded-full py-4 "
+                className="w-[90%] items-center mt-10 bg-[#AC7F5E] rounded-full py-4  "
               >
                 <Text className="text-[#D9D9D9] text-2xl">{submitLabel}</Text>
               </Pressable>
