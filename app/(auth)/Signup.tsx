@@ -4,10 +4,10 @@ import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
+import { Image, Pressable, View, useWindowDimensions } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function Saved() {
+export default function Signup() {
   const router = useRouter();
   const { width } = useWindowDimensions(); 
   const insets = useSafeAreaInsets();
@@ -46,40 +46,8 @@ export default function Saved() {
           </Pressable>
           </View>
      </View>
-  <View style={{ position: 'absolute', top: insets.top + 200, left: 0, right: 0, bottom: 0 }}>
-       <View className="absolute inset-0 flex items-center flex-col gap-4">
-             <Text className="" style={{fontFamily: 'Satoshi', color: 'white', fontSize: 30, fontWeight: 'bold'}}>
-                WELCOME TO
-             </Text>
-             <Text className="" style={{fontFamily: 'Satoshi', color: 'white', fontSize: 30, fontWeight: 'bold'}}>
-                KLESIFY
-             </Text>
-             <View className="mt-6">
-            <Text className="" style={{ color: 'white', fontSize: 19, fontWeight: '400' }}>
-                Start your journey with us!
-            </Text>
-            </View>
-        {/* Buttons placed directly under the text, inside the same flow */}
-        <View className="mt-11 flex flex-col items-center gap-4">
-          <View>
-          <Pressable
-            onPress={() => router.push('/(auth)/Signup')}
-            className="bg-[#AC7F5E] rounded-full px-[90px] py-[16px]"
-          >
-            <Text className="text-white text-[18px] font-semibold">Create account</Text>
-          </Pressable>
-            </View>
-          <View>
-          <Pressable
-            onPress={() => router.push('/(auth)/Login')}
-            className="bg-black rounded-full px-[129px] py-[16px]"
-          >
-            <Text className="text-white text-[18px] font-semibold">SignIn</Text>
-          </Pressable>
-            </View>
-        </View>
-       </View>
-      </View>
+  
+      
     </SafeAreaView>
     </LinearGradient>
   );
