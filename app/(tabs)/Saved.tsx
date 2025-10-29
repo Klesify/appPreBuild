@@ -19,7 +19,7 @@ export default function Saved() {
   if (!fontsLoaded) return null;
 
  
-  const horizontalPadding = width * 0.08;
+ 
 
   // Resolve asset size so we can compute a correct height for the image and center it
   const resolved = Image.resolveAssetSource(images.handPhoto || require("../../assets/image/handPhoto.png"));
@@ -64,7 +64,7 @@ export default function Saved() {
           <View>
           <Pressable
             onPress={() => router.push('/(auth)/Signup')}
-            className="bg-[#AC7F5E] rounded-full px-[90px] py-[16px]"
+            className="bg-[#202020] rounded-full  border-2 border-[#AC7F5E] px-[90px] py-[16px]"
           >
             <Text className="text-white text-[18px] font-semibold">Create account</Text>
           </Pressable>
@@ -72,7 +72,7 @@ export default function Saved() {
           <View>
           <Pressable
             onPress={() => router.push('/(auth)/Login')}
-            className="bg-black rounded-full px-[129px] py-[16px]"
+            className="bg-[#1d1d1d] border-2 border-[#161616] rounded-full px-[129px] py-[16px]"
           >
             <Text className="text-white text-[18px] font-semibold">SignIn</Text>
           </Pressable>
