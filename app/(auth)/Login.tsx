@@ -104,7 +104,7 @@ export default function Login() {
                     }
 
                     // proceed (for now just navigate)
-                    router.push('/')
+                    router.push('/Home')
                   }
                 }}
                 label={'Log In'}

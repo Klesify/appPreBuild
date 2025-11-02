@@ -254,7 +254,7 @@ export default function Signup() {
                     }
 
                     // proceed (for now just navigate)
-                    router.push('/')
+                    router.push('/Home')
                   }}
                   label={'Create Account'}
                 />
