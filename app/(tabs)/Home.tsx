@@ -1,127 +1,81 @@
-import { images } from '@/constants/images'
-import { useFonts } from 'expo-font'
-import { LinearGradient } from 'expo-linear-gradient'
-import { Stack, useRouter } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
-import { Image, Text, View, useWindowDimensions } from 'react-native'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
-import Button from '../components/Button'
-
+// header uses simple circle indicator instead of icon
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useFonts } from "expo-font";
+import { LinearGradient } from "expo-linear-gradient";
+import { Stack, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { Pressable, Text, View } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 export default function Home() {
-  const router = useRouter()
-  const { width } = useWindowDimensions()
-  const insets = useSafeAreaInsets()
+  const router = useRouter();
+  
+  const insets = useSafeAreaInsets();
 
   const [fontsLoaded] = useFonts({
-    Satoshi: require('../../assets/fonts/LibreBaskerville-Regular.ttf'),
-    Satoshi2: require('../../assets/fonts/LibreBaskerville-Italic.ttf'),
-  })
-  if (!fontsLoaded) return null
+    Satoshi: require("../../assets/fonts/LibreBaskerville-Regular.ttf"),
+    Satoshi2: require("../../assets/fonts/LibreBaskerville-Italic.ttf"),
+  });
+  if (!fontsLoaded) return null;
 
-  const horizontalPadding = width * 0.08
+ 
+ 
 
-  // Resolve asset size so we can compute a correct height for the image and center it
-  const resolved = Image.resolveAssetSource(
-    images.handPhoto || require('../../assets/image/handPhoto.png')
-  )
-  const imgAspect = resolved?.width && resolved?.height ? resolved.width / resolved.height : 1
-  const imgWidth = width * 0.7
-  const imgHeight = imgWidth / imgAspect
-  const fontSize = width * 0.03 // 3% of screen width
+  // image sizing removed (not used here)
 
   return (
-    <LinearGradient colors={['#0b0b0b', '#262626', '#3a3a3a']} style={{ flex: 1 }}>
+    <LinearGradient
+      colors={["#0b0b0b", "#262626", "#3a3a3a"]}
+      style={{ flex: 1 }}
+    >
       <StatusBar style="light" translucent />
       <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
         <Stack.Screen options={{ headerShown: false }} />
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            alignItems: 'center',
-            zIndex: 10,
-            pointerEvents: 'none',
-          }}
-        >
-          <Image
-            source={images.logo}
-            style={{ position: 'absolute', width: imgWidth, height: imgHeight, top: 0 }}
-            resizeMode="contain"
-          />
-        </View>
-        <View style={{ paddingTop: insets.top + 25 }}>
-          <View
-            style={{
-              position: 'absolute',
+
+        {/* Header: large top bar, bottom-only rounded corners, title left and circular indicator right */}
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 20 }}>
+          <View style={{ paddingHorizontal: 0 }}>
+            <View style={{
+              flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%',
-              marginTop: 40,
-            }}
-          ></View>
-        </View>
-        <View style={{ position: 'absolute', top: insets.top + 40, left: 0, right: 0, bottom: 0 }}>
-          <View className="flex-1 items-center justify-center">
-            {/* sized container that matches image size so overlays are placed relative to the image */}
-            <View
-              style={{
-                width: imgWidth,
-                height: imgHeight,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 40,
-              }}
-            >
-              <Image
-                source={images.homePageLogo}
-                style={{ position: 'absolute', width: imgWidth, height: imgHeight }}
-                resizeMode="contain"
-              />
-
-              {/* Overlay text positioned absolutely inside the image bounds */}
-              {/* <View style={{ position: 'absolute', width: imgWidth * 0.9, alignItems: 'center' }}>
-              <Text
-                style={{ fontFamily: 'Satoshi' }}
-                className="text-white text-[26px] font-bold"
-              >
-                TRACK YOUR CALLS
-              </Text>
-
-              <Text
-                style={{ fontFamily: 'Satoshi2' }}
-                className="text-white italic text-[26px] mt-2"
-              >
-                to
-              </Text>
-
-              <Text
-                style={{ fontFamily: 'Satoshi2' }}
-                className="text-white italic text-[60px] font-bold mt-1"
-              >
-                SUCCESS
-              </Text>
-            </View> */}
+              justifyContent: 'space-between',
+              backgroundColor: '#1f1f1f',
+              // only round bottom corners to match the mock
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+              borderBottomLeftRadius: 28,
+              borderBottomRightRadius: 28,
+              paddingTop: insets.top + 16,
+              paddingBottom: 30,
+              paddingHorizontal: 20,
+              // stronger shadow to lift it above the content
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 6 },
+              shadowOpacity: 0.35,
+              shadowRadius: 10,
+              
+            }}>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '800', fontFamily: 'Satoshi', textTransform: 'uppercase' }}>Klesify</Text>
+              <Pressable onPress={() => router.push('/Login')} style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}>
+                <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: '#FFFFFF1A', alignItems: 'center', justifyContent: 'center' }}>
+                <MaterialCommunityIcons name="account-check-outline" size={24} color="white" />
+                </View>
+              </Pressable>
             </View>
           </View>
-          <View className="mt-6"></View>
-          {/* Bottom button stays fixed at the bottom and won't be pushed by the image */}
-          <View
-            className="w-full items-center"
-            style={{ bottom: insets.bottom + 16, paddingHorizontal: horizontalPadding }}
-          >
-            <Text
-              className=""
-              style={{ color: 'white', fontSize, fontWeight: '500', paddingBottom: 20 }}
-            >
-              Answer some questions to help secure the world!
-            </Text>
-            {/* Should be redirected to form */}
-            <Button submit={() => router.push('/')} label={'Form'} />
-          </View>
         </View>
-      </SafeAreaView>
+  <View style={{ position: 'absolute', top: insets.top + 120, left: 0, right: 0, bottom: 0 }}>
+       <View className="absolute inset-0 flex items-center flex-col gap-4">
+             
+             <View className="mt-6">
+            <Text className="" style={{ color: 'white', fontSize: 19, fontWeight: '400' }}>
+                Start your journey with us!
+            </Text>
+            </View>
+        {/* Buttons placed directly under the text, inside the same flow */}
+      
+       </View>
+      </View>
+    </SafeAreaView>
     </LinearGradient>
-  )
+  );
 }

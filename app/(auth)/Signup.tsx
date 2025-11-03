@@ -1,20 +1,19 @@
-import { images } from '@/constants/images'
 import Entypo from '@expo/vector-icons/Entypo'
 import { useFonts } from 'expo-font'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Stack, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { BriefcaseBusiness, IdCard, Lock, Mail, User } from 'lucide-react-native'
+import { Lock, Mail, Phone, User } from 'lucide-react-native'
 import React, { useState } from 'react'
 import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    Pressable,
+    ScrollView,
+    Text,
+    TouchableWithoutFeedback,
+    View,
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import Button from '../components/Button'
@@ -23,13 +22,8 @@ import TextField from '../components/TextField'
 
 export default function Signup() {
   const router = useRouter()
-  const { width } = useWindowDimensions()
   const insets = useSafeAreaInsets()
 
-  type Mode = 'company' | 'user'
-  const [mode, setMode] = useState<Mode | null>(null)
-
-  // form fields: separate state per mode so company inputs don't leak into user flow
   const [userForm, setUserForm] = useState({
     firstName: '',
     lastName: '',
@@ -38,39 +32,18 @@ export default function Signup() {
     password: '',
   })
 
-  const [companyForm, setCompanyForm] = useState({
-    companyName: '',
-    companyId: '',
-    contactFirstName: '',
-    contactLastName: '',
-    email: '',
-    phone: '',
-    password: '',
-  })
-
-  const [country, setCountry] = useState('')
-
   const [fontsLoaded] = useFonts({
     Satoshi: require('../../assets/fonts/LibreBaskerville-Regular.ttf'),
     Satoshi2: require('../../assets/fonts/LibreBaskerville-Italic.ttf'),
   })
   if (!fontsLoaded) return null
 
-  const horizontalPadding = width * 0.08
-
-  // Resolve asset size so we can compute a correct height for the image and center it
-  const resolved = Image.resolveAssetSource(
-    images.handPhoto || require('../../assets/image/handPhoto.png')
-  )
-  const imgAspect = resolved?.width && resolved?.height ? resolved.width / resolved.height : 1
-  const imgWidth = width * 0.7
-  const imgHeight = imgWidth / imgAspect
-
   return (
     <LinearGradient colors={['#0b0b0b', '#262626', '#3a3a3a']} style={{ flex: 1 }}>
       <StatusBar style="light" translucent />
       <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
         <Stack.Screen options={{ headerShown: false }} />
+
         <View style={{ paddingTop: insets.top + 25 }}>
           <View className="absolute left-4 top-[-40px] ">
             <Pressable
@@ -81,105 +54,44 @@ export default function Signup() {
             </Pressable>
           </View>
         </View>
-        <View
-          className="flex flex-col items-center justify-center gap-3 "
-          style={{ marginTop: -30 }}
-        >
+
+        <View className="flex flex-col items-center justify-center gap-3 " style={{ marginTop: 60 }}>
           <Text
-            className=""
             style={{ fontFamily: 'Satoshi', color: 'white', fontSize: 25, fontWeight: 'bold' }}
           >
             Create Your Account
           </Text>
-          <Text className="" style={{ color: 'white', fontSize: 18 }}>
-            How would you like to sign up as?
-          </Text>
-
-          {/* Two buttons: Company / User */}
-          <View className="mt-4 w-[90%] flex-row justify-start">
-            <Pressable
-              onPress={() => setMode('company')}
-              className={`mr-2 flex-1 items-center rounded-full border py-4  ${mode === 'company' ? 'border-[#AC7F5E]' : ''}`}
-            >
-              <Text className={`${mode === 'company' ? 'text-white' : 'text-[#D9D9D9]'} text-lg`}>
-                Company
-              </Text>
-            </Pressable>
-
-            <Pressable
-              onPress={() => setMode('user')}
-              className={`ml-2 flex-1 items-center rounded-full border py-4 ${mode === 'user' ? 'border-[#AC7F5E]' : ''}`}
-            >
-              <Text className={`${mode === 'user' ? 'text-white' : 'text-[#D9D9D9]'} text-lg`}>
-                User
-              </Text>
-            </Pressable>
-          </View>
+          <Text style={{ color: 'white', fontSize: 21 }}>Start your journey with us!</Text>
         </View>
 
-        {/* Form area: show inputs depending on selection */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}
-        >
-          <ScrollView
-            contentContainerStyle={{ padding: 20, paddingBottom: insets.bottom + 30 }}
-            keyboardShouldPersistTaps="handled"
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
           >
-            {mode ? (
+            <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: insets.bottom + 30 }}>
               <View className="w-full items-center">
-                {/* Company-specific extra fields */}
-                {mode === 'company' && (
-                  <>
-                    <TextField
-                      value={companyForm.companyName}
-                      setValue={(companyName) => setCompanyForm({ ...companyForm, companyName })}
-                      placeholder={'Company Name'}
-                      placeholderTextColor={'white'}
-                      className={'w-full text-white'}
-                      icon={<BriefcaseBusiness size={20} color="#AC7F5E" strokeWidth={1.5} />}
-                    />
-                    <TextField
-                      value={companyForm.companyId}
-                      setValue={(companyId) => setCompanyForm({ ...companyForm, companyId })}
-                      placeholder={'Company ID'}
-                      placeholderTextColor={'white'}
-                      className={'w-full text-white'}
-                      icon={<IdCard size={20} color="#AC7F5E" strokeWidth={1.5} />}
-                    />
-                  </>
-                )}
-                {/* Common inputs (bound to the active mode's form state) */}
                 <TextField
-                  value={mode === 'company' ? companyForm.contactFirstName : userForm.firstName}
-                  setValue={(value) => {
-                    if (mode === 'company')
-                      setCompanyForm((s) => ({ ...s, contactFirstName: value }))
-                    else setUserForm((s) => ({ ...s, firstName: value }))
-                  }}
-                  placeholder={mode === 'company' ? 'Contact First Name' : 'First Name'}
+                  value={userForm.firstName}
+                  setValue={(v) => setUserForm((s) => ({ ...s, firstName: v }))}
+                  placeholder={'First Name'}
                   placeholderTextColor={'white'}
                   className={'w-full text-white'}
                   icon={<User size={20} color="#AC7F5E" strokeWidth={1.5} />}
                 />
+
                 <TextField
-                  value={mode === 'company' ? companyForm.contactLastName : userForm.lastName}
-                  setValue={(value) => {
-                    if (mode === 'company')
-                      setCompanyForm((s) => ({ ...s, contactLastName: value }))
-                    else setUserForm((s) => ({ ...s, lastName: value }))
-                  }}
-                  placeholder={mode === 'company' ? 'Contact Last Name' : 'Last Name'}
+                  value={userForm.lastName}
+                  setValue={(v) => setUserForm((s) => ({ ...s, lastName: v }))}
+                  placeholder={'Last Name'}
                   placeholderTextColor={'white'}
                   className={'w-full text-white'}
                   icon={<User size={20} color="#AC7F5E" strokeWidth={1.5} />}
                 />
+
                 <TextField
-                  value={mode === 'company' ? companyForm.email : userForm.email}
-                  setValue={(value) => {
-                    if (mode === 'company') setCompanyForm((s) => ({ ...s, email: value }))
-                    else setUserForm((s) => ({ ...s, email: value }))
-                  }}
+                  value={userForm.email}
+                  setValue={(v) => setUserForm((s) => ({ ...s, email: v }))}
                   placeholder={'Email'}
                   placeholderTextColor={'white'}
                   className={'w-full text-white'}
@@ -187,19 +99,20 @@ export default function Signup() {
                   autoCapitalize="none"
                   icon={<Mail size={20} color="#AC7F5E" strokeWidth={1.5} />}
                 />
+
                 <PhoneField
-                  phone={mode === 'company' ? companyForm.phone : userForm.phone}
-                  setPhone={(value) => {
-                    if (mode === 'company') setCompanyForm((s) => ({ ...s, phone: value }))
-                    else setUserForm((s) => ({ ...s, phone: value }))
-                  }}
+                  phone={userForm.phone}
+                placeholder={'Phone Number'}
+                  placeholderTextColor={'white'}
+                  className={'w-full text-white'}
+                keyboardType="phone-pad"
+                  icon={<Phone size={20} color="#AC7F5E" strokeWidth={1.5} />}
+                  setPhone={(v) => setUserForm((s) => ({ ...s, phone: v }))}
                 />
+
                 <TextField
-                  value={mode === 'company' ? companyForm.password : userForm.password}
-                  setValue={(v) => {
-                    if (mode === 'company') setCompanyForm((s) => ({ ...s, password: v }))
-                    else setUserForm((s) => ({ ...s, password: v }))
-                  }}
+                  value={userForm.password}
+                  setValue={(v) => setUserForm((s) => ({ ...s, password: v }))}
                   placeholder={'Password'}
                   placeholderTextColor={'white'}
                   className={'w-full text-white'}
@@ -207,40 +120,21 @@ export default function Signup() {
                   autoCapitalize="none"
                   icon={<Lock size={20} color="#AC7F5E" strokeWidth={1.5} />}
                 />
+
                 <Button
                   submit={() => {
-                    // pick the active form values
-                    const active = mode === 'company' ? companyForm : userForm
-                    const emailOk = /^\S+@\S+\.\S+$/.test((active.email || '').trim())
-                    const phoneOk = /^\+?[0-9]{7,15}$/.test((active.phone || '').trim())
+                    const emailOk = /^\S+@\S+\.\S+$/.test((userForm.email || '').trim())
+                    const phoneOk = /^\+?[0-9]{7,15}$/.test((userForm.phone || '').trim())
 
-                    if (mode === 'user') {
-                      if (
-                        !userForm.firstName.trim() ||
-                        !userForm.lastName.trim() ||
-                        !userForm.email.trim() ||
-                        !userForm.password.trim() ||
-                        !userForm.phone.trim()
-                      ) {
-                        alert('Please fill all required fields.')
-                        return
-                      }
-                    } else {
-                      // company
-                      if (
-                        !companyForm.companyName.trim() ||
-                        !companyForm.contactFirstName.trim() ||
-                        !companyForm.contactLastName.trim() ||
-                        !companyForm.companyId.trim() ||
-                        !companyForm.email.trim() ||
-                        !companyForm.phone.trim() ||
-                        !companyForm.password.trim()
-                      ) {
-                        alert(
-                          'Please fill company name, contact person, company ID and other required fields.'
-                        )
-                        return
-                      }
+                    if (
+                      !userForm.firstName.trim() ||
+                      !userForm.lastName.trim() ||
+                      !userForm.email.trim() ||
+                      !userForm.password.trim() ||
+                      !userForm.phone.trim()
+                    ) {
+                      alert('Please fill all required fields.')
+                      return
                     }
                     if (!emailOk) {
                       alert('Please enter a valid email address.')
@@ -253,21 +147,15 @@ export default function Signup() {
                       return
                     }
 
-                    // proceed (for now just navigate)
-                    router.push('/Home')
+                    // proceed
+                    router.push('/(tabs)/Home')
                   }}
                   label={'Create Account'}
                 />
               </View>
-            ) : (
-              <View className="mt-6 w-full items-center">
-                <Text style={{ color: 'white', opacity: 0.9 }}>
-                  Choose an option above to continue
-                </Text>
-              </View>
-            )}
-          </ScrollView>
-        </KeyboardAvoidingView>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </LinearGradient>
   )

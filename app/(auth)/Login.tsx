@@ -43,8 +43,8 @@ export default function Login() {
           </View>
         </View>
         <View
-          className="flex flex-col items-center justify-center gap-3 "
-          style={{ marginTop: -30 }}
+          className="flex flex-col items-center justify-center gap-3  "
+          style={{ marginTop: 150 }}
         >
           <Text
             className=""
@@ -52,8 +52,8 @@ export default function Login() {
           >
             Welcome back
           </Text>
-          <Text className="" style={{ color: 'white', fontSize: 18 }}>
-            Login to continue your journey
+          <Text className="" style={{ color: 'white', fontSize: 21}}>
+            You have been missed!
           </Text>
         </View>
 
@@ -104,7 +104,7 @@ export default function Login() {
                     }
 
                     // proceed (for now just navigate)
-                    router.push('/Home')
+                    router.push('/(tabs)/Home')
                   }
                 }}
                 label={'Log In'}

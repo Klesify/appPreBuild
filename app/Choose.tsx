@@ -7,20 +7,19 @@ import { StatusBar } from 'expo-status-bar'
 import { Image, Pressable, Text, View, useWindowDimensions } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
-export default function Saved() {
+export default function Choose() {
   const router = useRouter()
   const { width } = useWindowDimensions()
   const insets = useSafeAreaInsets()
 
   const [fontsLoaded] = useFonts({
-    Satoshi: require('../../assets/fonts/LibreBaskerville-Regular.ttf'),
-    Satoshi2: require('../../assets/fonts/LibreBaskerville-Italic.ttf'),
+    Satoshi: require('../assets/fonts/LibreBaskerville-Regular.ttf'),
+    Satoshi2: require('../assets/fonts/LibreBaskerville-Italic.ttf'),
   })
   if (!fontsLoaded) return null
 
-  // Resolve asset size so we can compute a correct height for the image and center it
   const resolved = Image.resolveAssetSource(
-    images.handPhoto || require('../../assets/image/handPhoto.png')
+    images.handPhoto || require('../assets/image/handPhoto.png')
   )
   const imgAspect = resolved?.width && resolved?.height ? resolved.width / resolved.height : 1
   const imgWidth = width * 0.7
