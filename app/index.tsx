@@ -76,7 +76,7 @@ export default function Index() {
         >
           <View className="items-center">
             <Pressable
-              onPress={() => router.push("/Choose")}
+              onPress={() => router.push("/(auth)/Choose")}
               className="px-6 py-4 rounded-full bg-black/40 w-[100%] border-neutral-900 border-2 justify-between flex-row items-center"
             >
               <Text className="text-white font-semibold text-lg">Get Started</Text>

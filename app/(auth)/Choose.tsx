@@ -1,29 +1,19 @@
-import { images } from '@/constants/images'
 import Entypo from '@expo/vector-icons/Entypo'
 import { useFonts } from 'expo-font'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Stack, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { Image, Pressable, Text, View, useWindowDimensions } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function Choose() {
   const router = useRouter()
-  const { width } = useWindowDimensions()
   const insets = useSafeAreaInsets()
-
   const [fontsLoaded] = useFonts({
-    Satoshi: require('../assets/fonts/LibreBaskerville-Regular.ttf'),
-    Satoshi2: require('../assets/fonts/LibreBaskerville-Italic.ttf'),
+    Satoshi: require('../../assets/fonts/LibreBaskerville-Regular.ttf'),
+    Satoshi2: require('../../assets/fonts/LibreBaskerville-Italic.ttf'),
   })
   if (!fontsLoaded) return null
-
-  const resolved = Image.resolveAssetSource(
-    images.handPhoto || require('../assets/image/handPhoto.png')
-  )
-  const imgAspect = resolved?.width && resolved?.height ? resolved.width / resolved.height : 1
-  const imgWidth = width * 0.7
-  const imgHeight = imgWidth / imgAspect
 
   return (
     <LinearGradient colors={['#0b0b0b', '#262626', '#3a3a3a']} style={{ flex: 1 }}>
@@ -64,7 +54,7 @@ export default function Choose() {
             <View className="mt-11 flex flex-col items-center gap-4">
               <View>
                 <Pressable
-                  onPress={() => router.push('/(auth)/Signup')}
+                  onPress={() => router.push('/Signup')}
                   className="rounded-full border-2  border-[#AC7F5E] bg-[#202020] px-[90px] py-[16px]"
                 >
                   <Text className="text-[18px] font-semibold text-white">Create account</Text>
@@ -72,7 +62,7 @@ export default function Choose() {
               </View>
               <View>
                 <Pressable
-                  onPress={() => router.push('/(auth)/Login')}
+                  onPress={() => router.push('/Login')}
                   className="rounded-full border-2 border-[#161616] bg-[#1d1d1d] px-[129px] py-[16px]"
                 >
                   <Text className="text-[18px] font-semibold text-white">Sign In</Text>

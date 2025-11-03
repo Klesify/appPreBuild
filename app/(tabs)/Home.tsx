@@ -17,10 +17,6 @@ export default function Home() {
   });
   if (!fontsLoaded) return null;
 
- 
- 
-
-  // image sizing removed (not used here)
 
   return (
     <LinearGradient
@@ -30,8 +26,6 @@ export default function Home() {
       <StatusBar style="light" translucent />
       <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
         <Stack.Screen options={{ headerShown: false }} />
-
-        {/* Header: large top bar, bottom-only rounded corners, title left and circular indicator right */}
         <View style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 20 }}>
           <View style={{ paddingHorizontal: 0 }}>
             <View style={{
@@ -39,7 +33,6 @@ export default function Home() {
               alignItems: 'center',
               justifyContent: 'space-between',
               backgroundColor: '#1f1f1f',
-              // only round bottom corners to match the mock
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
               borderBottomLeftRadius: 28,
@@ -47,7 +40,6 @@ export default function Home() {
               paddingTop: insets.top + 16,
               paddingBottom: 30,
               paddingHorizontal: 20,
-              // stronger shadow to lift it above the content
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 6 },
               shadowOpacity: 0.35,
@@ -71,7 +63,7 @@ export default function Home() {
                 Start your journey with us!
             </Text>
             </View>
-        {/* Buttons placed directly under the text, inside the same flow */}
+     
       
        </View>
       </View>
