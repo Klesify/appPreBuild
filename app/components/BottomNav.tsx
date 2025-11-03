@@ -1,18 +1,18 @@
-import Entypo from '@expo/vector-icons/Entypo'
-import Feather from '@expo/vector-icons/Feather'
-import { useRouter, useSegments } from 'expo-router'
-import React from 'react'
-import { Pressable, Text, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter, useSegments } from 'expo-router';
+import React from 'react';
+import { Pressable, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function BottomNav() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
   const segments = useSegments()
-  const active = segments[segments.length - 1] || 'Home' // last segment indicates current tab
+  const knownTabs = ['Home', 'Profile']           
+  const active = segments.find(s => knownTabs.includes(s)) ?? 'Home'
 
   return (
     <View
-      pointerEvents="box-none"
       style={{
         position: 'absolute',
         left:0 ,
@@ -37,8 +37,8 @@ export default function BottomNav() {
           shadowOpacity: 0.3,
           shadowRadius: 8,
           elevation: 5,
-         borderWidth: 0.5,
-            borderColor: '#AC7F5E88',
+          borderWidth: 0.5,
+          borderColor: '#AC7F5E88',
         }}
       >
         <Pressable
@@ -46,7 +46,7 @@ export default function BottomNav() {
           onPress={() => router.push('/(tabs)/Home')}
           style={{ alignItems: 'center', paddingHorizontal: 12 }}
         >
-          <Entypo name="home" size={24} color={active === 'Home' ? 'white' : '#999'} />
+          <Ionicons name="home-outline" size={24} color={active === 'Home' ? 'white' : '#999'} />
           <Text style={{ color: active === 'Home' ? 'white' : '#999', fontSize: 14 }}>Home</Text>
         </Pressable>
 

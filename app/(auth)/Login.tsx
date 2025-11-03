@@ -30,12 +30,12 @@ export default function Login() {
     <LinearGradient colors={['#0b0b0b', '#262626', '#3a3a3a']} style={{ flex: 1 }}>
       <StatusBar style="light" translucent />
       <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
-        <Stack.Screen options={{ headerShown: false }} />
+  <Stack.Screen options={{ headerShown: false }} />
 
         <View style={{ paddingTop: insets.top + 25 }}>
           <View className="absolute left-4 top-[-40px] ">
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => router.replace('/Choose')}
               className="mt-14 h-12 w-12 items-center justify-center self-start rounded-full bg-[#FFFFFF1A]"
             >
               <Entypo name="chevron-left" size={24} color="white" />

@@ -19,12 +19,12 @@ export default function Choose() {
     <LinearGradient colors={['#0b0b0b', '#262626', '#3a3a3a']} style={{ flex: 1 }}>
       <StatusBar style="light" translucent />
       <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
-        <Stack.Screen options={{ headerShown: false }} />
+  <Stack.Screen options={{ headerShown: false }} />
 
         <View style={{ paddingTop: insets.top + 25 }}>
           <View className="absolute left-4 top-[-40px] ">
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => router.replace('/')}
               className="mt-14 h-12 w-12 items-center justify-center self-start rounded-full bg-[#FFFFFF1A]"
             >
               <Entypo name="chevron-left" size={24} color="white" />
@@ -62,7 +62,7 @@ export default function Choose() {
               </View>
               <View>
                 <Pressable
-                  onPress={() => router.push('/Login')}
+                  onPress={() => router.replace('/Login')}
                   className="rounded-full border-2 border-[#161616] bg-[#1d1d1d] px-[129px] py-[16px]"
                 >
                   <Text className="text-[18px] font-semibold text-white">Sign In</Text>

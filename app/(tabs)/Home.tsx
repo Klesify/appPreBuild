@@ -16,8 +16,6 @@ export default function Home() {
     Satoshi2: require("../../assets/fonts/LibreBaskerville-Italic.ttf"),
   });
   if (!fontsLoaded) return null;
-
-
   return (
     <LinearGradient
       colors={["#0b0b0b", "#262626", "#3a3a3a"]}

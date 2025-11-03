@@ -10,10 +10,9 @@ import {
     KeyboardAvoidingView,
     Platform,
     Pressable,
-    ScrollView,
     Text,
     TouchableWithoutFeedback,
-    View,
+    View
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import Button from '../components/Button'
@@ -43,7 +42,6 @@ export default function Signup() {
       <StatusBar style="light" translucent />
       <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
         <Stack.Screen options={{ headerShown: false }} />
-
         <View style={{ paddingTop: insets.top + 25 }}>
           <View className="absolute left-4 top-[-40px] ">
             <Pressable
@@ -67,9 +65,9 @@ export default function Signup() {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={{ flex: 1 }}
+            style={{ flex: 1 ,paddingTop: 20, paddingHorizontal: 20}}
           >
-            <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: insets.bottom + 30 }}>
+            
               <View className="w-full items-center">
                 <TextField
                   value={userForm.firstName}
@@ -146,14 +144,11 @@ export default function Signup() {
                       )
                       return
                     }
-
-                    // proceed
                     router.push('/(tabs)/Home')
                   }}
                   label={'Create Account'}
                 />
               </View>
-            </ScrollView>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </SafeAreaView>
