@@ -5,21 +5,17 @@ import { Stack, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { Lock, Mail } from 'lucide-react-native'
 import React, { useState } from 'react'
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native'
+import { Keyboard, KeyboardAvoidingView, Platform, Pressable, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
-
 export default function Login() {
   const router = useRouter()
   const insets = useSafeAreaInsets()
-
-  // form fields: separate state per mode so company inputs don't leak into user flow
   const [form, setForm] = useState({
     email: '',
     password: '',
   })
-
   const [fontsLoaded] = useFonts({
     Satoshi: require('../../assets/fonts/LibreBaskerville-Regular.ttf'),
     Satoshi2: require('../../assets/fonts/LibreBaskerville-Italic.ttf'),
@@ -30,8 +26,7 @@ export default function Login() {
     <LinearGradient colors={['#0b0b0b', '#262626', '#3a3a3a']} style={{ flex: 1 }}>
       <StatusBar style="light" translucent />
       <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
-  <Stack.Screen options={{ headerShown: false }} />
-
+    <Stack.Screen options={{ headerShown: false }} />
         <View style={{ paddingTop: insets.top + 25 }}>
           <View className="absolute left-4 top-[-40px] ">
             <Pressable
@@ -47,7 +42,6 @@ export default function Login() {
           style={{ marginTop: 150 }}
         >
           <Text
-            className=""
             style={{ fontFamily: 'Satoshi', color: 'white', fontSize: 25, fontWeight: 'bold' }}
           >
             Welcome back
@@ -56,17 +50,12 @@ export default function Login() {
             You have been missed!
           </Text>
         </View>
-
-        {/* Form area: show inputs depending on selection */}
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
         >
-          <ScrollView
-            contentContainerStyle={{ padding: 20, paddingBottom: insets.bottom + 30 }}
-            keyboardShouldPersistTaps="handled"
-          >
-            <View className="w-full items-center">
+            <View className="w-full items-center pt-7 px-[20px]">
               <TextField
                 value={form.email}
                 setValue={(email) => setForm({ ...form, email })}
@@ -102,16 +91,14 @@ export default function Login() {
                       alert('Please enter a valid email address.')
                       return
                     }
-
-                    // proceed (for now just navigate)
                     router.push('/(tabs)/Home')
                   }
                 }}
                 label={'Log In'}
               />
             </View>
-          </ScrollView>
         </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </LinearGradient>
   )

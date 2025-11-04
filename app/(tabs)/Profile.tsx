@@ -1,4 +1,3 @@
-// header uses simple circle indicator instead of icon
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { Stack } from "expo-router";
@@ -6,10 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 export default function Profile() {
-
-  
   const insets = useSafeAreaInsets();
-
   const [fontsLoaded] = useFonts({
     Satoshi: require("../../assets/fonts/LibreBaskerville-Regular.ttf"),
     Satoshi2: require("../../assets/fonts/LibreBaskerville-Italic.ttf"),

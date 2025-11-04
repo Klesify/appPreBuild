@@ -17,11 +17,7 @@ export default function Index() {
     Satoshi2: require("../assets/fonts/LibreBaskerville-Italic.ttf"),
   });
   if (!fontsLoaded) return null;
-
- 
   const horizontalPadding = width * 0.08;
-
-  // Resolve asset size so we can compute a correct height for the image and center it
   const resolved = Image.resolveAssetSource(images.handPhoto || require("../assets/image/handPhoto.png"));
   const imgAspect = resolved?.width && resolved?.height ? resolved.width / resolved.height : 1;
   const imgWidth = width * 0.7;
@@ -61,7 +57,6 @@ export default function Index() {
      </View>
   <View style={{ position: 'absolute', top: insets.top + 40, left: 0, right: 0, bottom: 0 }}>
         <View className="flex-1 justify-center items-center">
-          {/* sized container that matches image size so overlays are placed relative to the image */}
           <View style={{ width: imgWidth, height: imgHeight, justifyContent: 'center', alignItems: 'center', marginTop:40 }}>
             <Image
               source={images.handPhoto}

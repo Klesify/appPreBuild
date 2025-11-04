@@ -6,13 +6,13 @@ import { StatusBar } from 'expo-status-bar'
 import { Lock, Mail, Phone, User } from 'lucide-react-native'
 import React, { useState } from 'react'
 import {
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    Text,
-    TouchableWithoutFeedback,
-    View
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Text,
+  TouchableWithoutFeedback,
+  View
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import Button from '../components/Button'
