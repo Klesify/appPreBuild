@@ -10,6 +10,9 @@ export interface OutgoingCallCardProps {
   contactName?: string
   apiBaseUrl?: string
   authToken?: string
+  // Optional: attach ring audio file on request
+  sendRingFile?: boolean
+  ringFieldName?: string // defaults to 'ring'
   onHangup?: () => Promise<void> | void
   onDecline?: () => Promise<void> | void
   onAfterAction?: () => void
@@ -29,6 +32,8 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
   contactName,
   apiBaseUrl,
   authToken,
+  sendRingFile = false,
+  ringFieldName,
   onHangup,
   onDecline,
   onAfterAction,
@@ -125,15 +130,43 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
        
         await onDecline()
       } else if (apiBaseUrl && callId) {
-       
-        const r = await fetch(`${apiBaseUrl}/calls/${callId}/end`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
-          },
-          body: JSON.stringify({ callId }),
-        })
+        // callId already conveyed in URL; append phone as query param if available
+        const phoneParam = encodeURIComponent((phoneNumber || '').trim())
+        const url = `${apiBaseUrl}/calls/${callId}/end${phoneParam ? `?phone=${phoneParam}` : ''}`
+        const headers: Record<string, string> = {
+          'Accept': 'application/json',
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+        }
+        let bodyToSend: BodyInit | undefined
+        if (sendRingFile && ringUri) {
+          try {
+            const fileRes = await fetch(ringUri)
+            const blob = await fileRes.blob()
+            // Convert blob -> base64 for JSON transport as { phoneNumber, blobData }
+            const arrayBuffer = await blob.arrayBuffer()
+            const bytes = new Uint8Array(arrayBuffer)
+            let binary = ''
+            for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i])
+            // @ts-ignore btoa may exist in React Native Hermes; fallback to Buffer if polyfilled
+            let base64: string
+            try { base64 = btoa(binary) } catch { base64 = Buffer.from(binary, 'binary').toString('base64') }
+            const payload = {
+              phoneNumber: (phoneNumber || '').trim(),
+              blobData: base64,
+              mime: 'audio/wav',
+              fileName: 'ring.wav',
+            }
+            headers['Content-Type'] = 'application/json'
+            bodyToSend = JSON.stringify(payload)
+          } catch {
+            throw new Error('Failed to encode WAV as base64')
+          }
+        } else {
+          // No file -> still send JSON with phoneNumber (optional) or empty
+            headers['Content-Type'] = 'application/json'
+            bodyToSend = JSON.stringify({ phoneNumber: (phoneNumber || '').trim() })
+        }
+        const r = await fetch(url, { method: 'POST', headers, body: bodyToSend })
         if (!r.ok) throw new Error(`End call failed (${r.status})`)
       } else {
         throw new Error('No onHangup handler or apiBaseUrl/callId provided')
@@ -144,7 +177,7 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
     } finally {
       setLoading(false)
     }
-  }, [loading, onHangup, onDecline, apiBaseUrl, callId, authToken, onAfterAction])
+  }, [loading, onHangup, onDecline, apiBaseUrl, callId, authToken, sendRingFile, ringUri, phoneNumber, onAfterAction])
 
   return (
     <SafeAreaView edges={['top', 'left', 'right', 'bottom']} className="w-full ">

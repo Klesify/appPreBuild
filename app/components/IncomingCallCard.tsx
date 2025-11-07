@@ -53,13 +53,12 @@ const IncomingCallCard: React.FC<IncomingCallCardProps> = ({
           if (onAccept) {
             await onAccept()
           } else if (apiBaseUrl && callId) {
+            // callId is in URL; omit JSON body
             const r = await fetch(`${apiBaseUrl}/calls/${callId}/accept`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json',
                 ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
               },
-              body: JSON.stringify({ callId }),
             })
             if (!r.ok) throw new Error(`Accept failed (${r.status})`)
           } else {
@@ -72,10 +71,8 @@ const IncomingCallCard: React.FC<IncomingCallCardProps> = ({
             const r = await fetch(`${apiBaseUrl}/calls/${callId}/decline`, {
               method: 'POST',
               headers: {
-                'Content-Type': 'application/json',
                 ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
               },
-              body: JSON.stringify({ callId }),
             })
             if (!r.ok) throw new Error(`Decline failed (${r.status})`)
           } else {
