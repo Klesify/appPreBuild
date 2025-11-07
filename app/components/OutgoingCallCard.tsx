@@ -1,4 +1,5 @@
 import Entypo from '@expo/vector-icons/Entypo'
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, Pressable, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -16,6 +17,10 @@ export interface OutgoingCallCardProps {
   onHangupPressIn?: () => void
   onHangupPressOut?: () => void
   onHangupLongPress?: () => void
+  ringUri?: string
+  autoPlayRing?: boolean
+  ringLoop?: boolean
+  ringVolume?: number
 }
 
 const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
@@ -31,11 +36,16 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
   onHangupPressIn,
   onHangupPressOut,
   onHangupLongPress,
+  ringUri,
+  autoPlayRing = false,
+  ringLoop = false,
+  ringVolume = 1.0,
 }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [elapsed, setElapsed] = useState<number>(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const soundRef = useRef<Audio.Sound | null>(null)
 
   
   useEffect(() => {
@@ -45,8 +55,45 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
     }, 1000)
     return () => {
       if (timerRef.current) clearInterval(timerRef.current)
+      if (soundRef.current) {
+        soundRef.current.stopAsync().catch(() => {})
+        soundRef.current.unloadAsync().catch(() => {})
+        soundRef.current = null
+      }
     }
   }, [])
+
+  // Auto-play ring audio
+  useEffect(() => {
+    let mounted = true
+    const setup = async () => {
+      if (!autoPlayRing || !ringUri) return
+      try {
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true,
+          interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+          interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+          shouldDuckAndroid: true,
+          playThroughEarpieceAndroid: false,
+          staysActiveInBackground: false,
+        })
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: ringUri },
+          { volume: ringVolume, isLooping: ringLoop }
+        )
+        if (!mounted) {
+          await sound.unloadAsync()
+          return
+        }
+        soundRef.current = sound
+        await sound.playAsync()
+      } catch {
+        // Silently ignore audio setup failures
+      }
+    }
+    setup()
+    return () => { mounted = false }
+  }, [autoPlayRing, ringUri, ringLoop, ringVolume])
 
   const formatTime = (total: number) => {
     const m = Math.floor(total / 60)
@@ -65,6 +112,11 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
       if (timerRef.current) {
         clearInterval(timerRef.current)
         timerRef.current = null
+      }
+      if (soundRef.current) {
+        await soundRef.current.stopAsync().catch(() => {})
+        await soundRef.current.unloadAsync().catch(() => {})
+        soundRef.current = null
       }
 
       if (onHangup) {

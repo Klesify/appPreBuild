@@ -28,7 +28,7 @@ export default function ContactsScreen() {
         })}
         className="h-10 px-4 rounded-full bg-[#129e27] items-center justify-center"
       >
-        <Text style={{ color: 'white', fontWeight: '600' }}>Call</Text>
+        <Text style={{ color: 'white', fontWeight: '600'}}>Call</Text>
       </Pressable>
     </View>
   )
@@ -37,9 +37,8 @@ export default function ContactsScreen() {
     <LinearGradient colors={['#0b0b0b', '#262626', '#3a3a3a']} style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <Stack.Screen options={{ headerShown: false }} />
-        <View style={{ paddingTop: insets.top + 25 }} className="px-4 mb-4">
-          <Text style={{ color: 'white', fontSize: 24, fontWeight: '700' }}>Contacts</Text>
-          <Text style={{ color: '#aaaaaa', marginTop: 4 }}>Choose someone to call</Text>
+        <View style={{ paddingTop: insets.top + 25 }} className="px-4 mb-4 flex items-center">
+          <Text className="-top-10 " style={{ color: 'white', fontSize: 28, fontWeight: '700', marginBottom: 10, }}>Contacts</Text>
         </View>
         <FlatList
           data={data}

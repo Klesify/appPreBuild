@@ -1,4 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Asset } from 'expo-asset';
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { Stack, useRouter } from "expo-router";
@@ -57,6 +58,23 @@ export default function Home() {
                 Start your journey with us!
             </Text>
             </View>
+            <Pressable
+              onPress={async () => {
+                try {
+                  const asset = Asset.fromModule(require('../../assets/audios/Marcel_Mondialu_scam.wav'))
+                  if (!asset.localUri && !asset.downloaded) {
+                    await asset.downloadAsync()
+                  }
+                  const ringUri = asset.localUri ?? asset.uri
+                  router.push({ pathname: '/(calls)/OutgoingCall', params: { phone: '+111 222 333', name: 'Marcel Mondialu', ring: ringUri } })
+                } catch (e) {
+                  console.warn('Failed to resolve WAV asset', e)
+                }
+              }}
+              className="mt-10 h-12 px-6 rounded-full bg-[#129e27] items-center justify-center"
+            >
+              <Text style={{ color: 'white', fontWeight: '600' }}>Play Local WAV</Text>
+            </Pressable>
             
        </View>
       </View>
