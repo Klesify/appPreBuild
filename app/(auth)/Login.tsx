@@ -50,11 +50,57 @@ export default function Login() {
             You have been missed!
           </Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}
-        >
+        {Platform.OS !== 'web' ? (
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              style={{ flex: 1 }}
+            >
+              <View className="w-full items-center pt-7 px-[20px]">
+                <TextField
+                  value={form.email}
+                  setValue={(email) => setForm({ ...form, email })}
+                  placeholder={'Email'}
+                  placeholderTextColor={'white'}
+                  keyboardType={'email-address'}
+                  className={'w-full text-white'}
+                  autoCapitalize="none"
+                  icon={<Mail size={20} color="#4BA3C3" strokeWidth={1.5} />}
+                />
+                <TextField
+                  value={form.password}
+                  setValue={(password) => setForm({ ...form, password })}
+                  placeholder={'Password'}
+                  placeholderTextColor={'white'}
+                  className={'w-full text-white'}
+                  secureTextEntry={true}
+                  icon={<Lock size={20} color="#4BA3C3" strokeWidth={1.5} />}
+                />
+                <Button
+                  submit={() => {
+                    {
+                      const active = form
+                      const emailOk = /^\S+@\S+\.\S+$/.test((active.email || '').trim())
+
+                      if (!form.email.trim() || !form.password.trim()) {
+                        alert('Please fill all required fields.')
+                        return
+                      }
+
+                      if (!emailOk) {
+                        alert('Please enter a valid email address.')
+                        return
+                      }
+                      router.push('/(tabs)/Home')
+                    }
+                  }}
+                  label={'Log In'}
+                />
+              </View>
+            </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
+        ) : (
+          <KeyboardAvoidingView behavior={'height'} style={{ flex: 1 }}>
             <View className="w-full items-center pt-7 px-[20px]">
               <TextField
                 value={form.email}
@@ -97,8 +143,8 @@ export default function Login() {
                 label={'Log In'}
               />
             </View>
-        </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+          </KeyboardAvoidingView>
+        )}
       </SafeAreaView>
     </LinearGradient>
   )

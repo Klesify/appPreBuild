@@ -1,8 +1,8 @@
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 export default function Settings() {
   const insets = useSafeAreaInsets();
@@ -26,6 +26,12 @@ export default function Settings() {
                 Start your journey with us!
             </Text>
             </View>
+            <Pressable
+              onPress={() => router.push('/(calls)/IncomingCall')}
+              className="mt-14 h-12 w-12 items-center justify-center self-start rounded-full bg-[#FFFFFF1A]"
+            >
+             
+            </Pressable>
        </View>
       </View>
     </SafeAreaView>

@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 import { Image, Pressable, Text, View, useWindowDimensions } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -11,6 +12,9 @@ export default function Index() {
   const router = useRouter();
   const { width } = useWindowDimensions(); 
   const insets = useSafeAreaInsets();
+  // Hooks must be declared before any early returns
+  const [imgRatio, setImgRatio] = useState(1);
+  const baseImage = images.poza1 ?? images.poza1;
 
   const [fontsLoaded] = useFonts({
     Satoshi: require("../assets/fonts/LibreBaskerville-Regular.ttf"),
@@ -18,11 +22,9 @@ export default function Index() {
   });
   if (!fontsLoaded) return null;
   const horizontalPadding = width * 0.08;
-  // const resolved = Image.resolveAssetSource(images.handPhoto || require("../assets/image/handPhoto.png"));
-   const resolved = Image.resolveAssetSource(images.handPhoto || require("../assets/image/poza1.png"));
-  const imgAspect = resolved?.width && resolved?.height ? resolved.width / resolved.height : 1;
+  // Web-friendly: avoid Image.resolveAssetSource; get intrinsic size on load
   const imgWidth = width * 0.7;
-  const imgHeight = imgWidth / imgAspect;
+  const imgHeight = imgWidth / imgRatio;
 
   return (
     <LinearGradient
@@ -60,7 +62,13 @@ export default function Index() {
         <View className="flex-1 justify-center items-center">
           <View style={{ width: imgWidth, height: imgHeight, justifyContent: 'center', alignItems: 'center', marginTop:40 }}>
             <Image
-              source={images.poza1}
+              source={baseImage}
+              onLoad={(e) => {
+                const { width, height } = (e?.nativeEvent as any)?.source || {};
+                if (width && height) {
+                  setImgRatio(width / height);
+                }
+              }}
               style={{ position: 'absolute', width: imgWidth, height: imgHeight }}
               resizeMode="contain"
             />
