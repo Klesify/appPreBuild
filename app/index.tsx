@@ -18,7 +18,8 @@ export default function Index() {
   });
   if (!fontsLoaded) return null;
   const horizontalPadding = width * 0.08;
-  const resolved = Image.resolveAssetSource(images.handPhoto || require("../assets/image/handPhoto.png"));
+  // const resolved = Image.resolveAssetSource(images.handPhoto || require("../assets/image/handPhoto.png"));
+   const resolved = Image.resolveAssetSource(images.handPhoto || require("../assets/image/poza1.png"));
   const imgAspect = resolved?.width && resolved?.height ? resolved.width / resolved.height : 1;
   const imgWidth = width * 0.7;
   const imgHeight = imgWidth / imgAspect;
@@ -59,7 +60,7 @@ export default function Index() {
         <View className="flex-1 justify-center items-center">
           <View style={{ width: imgWidth, height: imgHeight, justifyContent: 'center', alignItems: 'center', marginTop:40 }}>
             <Image
-              source={images.handPhoto}
+              source={images.poza1}
               style={{ position: 'absolute', width: imgWidth, height: imgHeight }}
               resizeMode="contain"
             />
@@ -72,7 +73,7 @@ export default function Index() {
           <View className="items-center">
             <Pressable
               onPress={() => router.push("/(auth)/Choose")}
-              className="px-6 py-4 rounded-full bg-black/40 w-[100%] border-neutral-900 border-2 justify-between flex-row items-center"
+              className="px-6 py-4 rounded-full bg-black/40 w-[100%] border-[#4BA3C3] border-[1px] justify-between flex-row items-center"
             >
               <Text className="text-white font-semibold text-lg">Get Started</Text>
               <View className="rounded-full w-10 h-10 bg-white justify-center items-center">

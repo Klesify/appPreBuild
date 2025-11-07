@@ -24,10 +24,10 @@ export default function PhoneField({
   maxLength = 15,
 }: PhoneFieldProps) {
   return (
-    <View className="mb-4 w-[90%] rounded-full border border-[#AC7F5E] px-6 py-3">
+    <View className="mb-4 w-[90%] rounded-full border border-[#4BA3C3] px-6 py-3">
       <View className="flex-row items-center">
-        <View className="mr-3 h-10 w-10 items-center justify-center rounded-full border border-[#AC7F5E]">
-          {icon ?? <Phone size={20} stroke="#AC7F5E" strokeWidth={1.5} />}
+        <View className="mr-3 h-10 w-10 items-center justify-center rounded-full border border-[#4BA3C3]">
+          {icon ?? <Phone size={20} stroke="#4BA3C3" strokeWidth={1.5} />}
         </View>
         <TextInput
           value={phone}

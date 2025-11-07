@@ -7,7 +7,7 @@ export default function TabsLayout() {
     <>
       <Tabs screenOptions={{ tabBarStyle: { display: 'none' } }}>
         <Tabs.Screen name="Home" options={{ headerShown: false }} />
-        <Tabs.Screen name="Profile" options={{ headerShown: false }} />
+        <Tabs.Screen name="Settings" options={{ headerShown: false }} />
       </Tabs>
       <BottomNav />
     </>

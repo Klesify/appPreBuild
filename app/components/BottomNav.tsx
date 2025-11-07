@@ -8,7 +8,7 @@ export default function BottomNav() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
   const segments = useSegments()
-  const knownTabs = ['Home', 'Profile']           
+  const knownTabs = ['Home', 'Settings']           
   const active = segments.find(s => knownTabs.includes(s)) ?? 'Home'
 
   return (
@@ -38,7 +38,7 @@ export default function BottomNav() {
           shadowRadius: 8,
           elevation: 5,
           borderWidth: 0.5,
-          borderColor: '#AC7F5E88',
+          borderColor: '#4BA3C3',
         }}
       >
         <Pressable
@@ -52,11 +52,11 @@ export default function BottomNav() {
 
         <Pressable
           className='flex gap-1'
-          onPress={() => router.push('/(tabs)/Profile')}
+          onPress={() => router.push('/(tabs)/Settings')}
           style={{ alignItems: 'center', paddingHorizontal: 12 }}
         >
-          <Feather name="user" size={24} color={active==='Profile' ? 'white' : '#999'} />
-          <Text style={{ color: active === 'Profile' ? 'white' : '#999', fontSize: 14 }}>Profile</Text>
+          <Feather name="settings" size={24} color={active==='Settings' ? 'white' : '#999'} />
+          <Text style={{ color: active === 'Settings' ? 'white' : '#999', fontSize: 14 }}>Settings</Text>
         </Pressable>
       </View>
     </View>

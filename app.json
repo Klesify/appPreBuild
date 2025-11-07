@@ -8,19 +8,19 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.denisaaionescu.mobile-scam-app"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE"
-       
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.denisaaionescu.mobile_scam_app"
     },
     "web": {
       "output": "static"
-      
     },
     "plugins": [
       "expo-router",

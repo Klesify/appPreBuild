@@ -26,9 +26,9 @@ export default function TextField({
   autoCapitalize,
 }: TextFieldProps) {
   return (
-    <View className="mb-4 w-[90%] rounded-full border border-[#AC7F5E] px-6 py-3">
+    <View className="mb-4 w-[90%] rounded-full border border-[#4BA3C3] px-6 py-3">
       <View className="flex-row items-center">
-        <View className="mr-3 h-10 w-10 items-center justify-center rounded-full border border-[#AC7F5E]">
+        <View className="mr-3 h-10 w-10 items-center justify-center rounded-full border border-[#4BA3C3]">
           {icon}
         </View>
         <TextInput

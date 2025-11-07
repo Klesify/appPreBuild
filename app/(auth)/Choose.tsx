@@ -54,7 +54,7 @@ export default function Choose() {
               <View>
                 <Pressable
                   onPress={() => router.push('/Signup')}
-                  className="rounded-full border-2  border-[#AC7F5E] bg-[#202020] px-[90px] py-[16px]"
+                  className="rounded-full border-[1px]  border-[#4BA3C3] bg-[#202020] px-[90px] py-[16px]"
                 >
                   <Text className="text-[18px] font-semibold text-white">Create account</Text>
                 </Pressable>

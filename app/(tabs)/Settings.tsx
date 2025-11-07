@@ -4,7 +4,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-export default function Profile() {
+export default function Settings() {
   const insets = useSafeAreaInsets();
   const [fontsLoaded] = useFonts({
     Satoshi: require("../../assets/fonts/LibreBaskerville-Regular.ttf"),

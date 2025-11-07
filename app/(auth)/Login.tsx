@@ -64,7 +64,7 @@ export default function Login() {
                 keyboardType={'email-address'}
                 className={'w-full text-white'}
                 autoCapitalize="none"
-                icon={<Mail size={20} color="#AC7F5E" strokeWidth={1.5} />}
+                icon={<Mail size={20} color="#4BA3C3" strokeWidth={1.5} />}
               />
               <TextField
                 value={form.password}
@@ -73,7 +73,7 @@ export default function Login() {
                 placeholderTextColor={'white'}
                 className={'w-full text-white'}
                 secureTextEntry={true}
-                icon={<Lock size={20} color="#AC7F5E" strokeWidth={1.5} />}
+                icon={<Lock size={20} color="#4BA3C3" strokeWidth={1.5} />}
               />
               <Button
                 submit={() => {

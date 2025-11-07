@@ -75,7 +75,7 @@ export default function Signup() {
                   placeholder={'First Name'}
                   placeholderTextColor={'white'}
                   className={'w-full text-white'}
-                  icon={<User size={20} color="#AC7F5E" strokeWidth={1.5} />}
+                  icon={<User size={20} color="#4BA3C3" strokeWidth={1.5} />}
                 />
 
                 <TextField
@@ -84,7 +84,7 @@ export default function Signup() {
                   placeholder={'Last Name'}
                   placeholderTextColor={'white'}
                   className={'w-full text-white'}
-                  icon={<User size={20} color="#AC7F5E" strokeWidth={1.5} />}
+                  icon={<User size={20} color="#4BA3C3" strokeWidth={1.5} />}
                 />
 
                 <TextField
@@ -95,7 +95,7 @@ export default function Signup() {
                   className={'w-full text-white'}
                   keyboardType="email-address"
                   autoCapitalize="none"
-                  icon={<Mail size={20} color="#AC7F5E" strokeWidth={1.5} />}
+                  icon={<Mail size={20} color="#4BA3C3" strokeWidth={1.5} />}
                 />
 
                 <PhoneField
@@ -104,7 +104,7 @@ export default function Signup() {
                   placeholderTextColor={'white'}
                   className={'w-full text-white'}
                 keyboardType="phone-pad"
-                  icon={<Phone size={20} color="#AC7F5E" strokeWidth={1.5} />}
+                  icon={<Phone size={20} color="#4BA3C3" strokeWidth={1.5} />}
                   setPhone={(v) => setUserForm((s) => ({ ...s, phone: v }))}
                 />
 
@@ -116,7 +116,7 @@ export default function Signup() {
                   className={'w-full text-white'}
                   secureTextEntry={true}
                   autoCapitalize="none"
-                  icon={<Lock size={20} color="#AC7F5E" strokeWidth={1.5} />}
+                  icon={<Lock size={20} color="#4BA3C3" strokeWidth={1.5} />}
                 />
 
                 <Button
