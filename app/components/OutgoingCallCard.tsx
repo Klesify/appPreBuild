@@ -1,0 +1,135 @@
+import Entypo from '@expo/vector-icons/Entypo'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { ActivityIndicator, Pressable, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+export interface OutgoingCallCardProps {
+  phoneNumber: string
+  callId?: string
+  apiBaseUrl?: string
+  authToken?: string
+  onHangup?: () => Promise<void> | void
+  /** Backwards compat: use if onHangup not provided */
+  onDecline?: () => Promise<void> | void
+  onAfterAction?: () => void
+  onBack?: () => void
+  // Pre-listening hooks for button interactions
+  onHangupPressIn?: () => void
+  onHangupPressOut?: () => void
+  onHangupLongPress?: () => void
+}
+
+const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
+  phoneNumber,
+  callId,
+  apiBaseUrl,
+  authToken,
+  onHangup,
+  onDecline,
+  onAfterAction,
+  onBack,
+  onHangupPressIn,
+  onHangupPressOut,
+  onHangupLongPress,
+}) => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
+  const [elapsed, setElapsed] = useState<number>(0)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Start count-up timer on mount
+  useEffect(() => {
+    const start = Date.now()
+    timerRef.current = setInterval(() => {
+      setElapsed(Math.floor((Date.now() - start) / 1000))
+    }, 1000)
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current)
+    }
+  }, [])
+
+  const formatTime = (total: number) => {
+    const m = Math.floor(total / 60)
+    const s = total % 60
+    const mm = String(m).padStart(2, '0')
+    const ss = String(s).padStart(2, '0')
+    return `${mm}:${ss}`
+  }
+
+  const runHangup = useCallback(async () => {
+    if (loading) return
+    setLoading(true)
+    setError(null)
+    try {
+      // Stop the timer immediately on hangup attempt
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+
+      if (onHangup) {
+        await onHangup()
+      } else if (onDecline) {
+        // backward compat
+        await onDecline()
+      } else if (apiBaseUrl && callId) {
+        // Assumption: backend exposes an 'end' endpoint for active calls
+        const r = await fetch(`${apiBaseUrl}/calls/${callId}/end`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+          },
+          body: JSON.stringify({ callId }),
+        })
+        if (!r.ok) throw new Error(`End call failed (${r.status})`)
+      } else {
+        throw new Error('No onHangup handler or apiBaseUrl/callId provided')
+      }
+      onAfterAction?.()
+    } catch (e: any) {
+      setError(e?.message || 'Unknown error')
+    } finally {
+      setLoading(false)
+    }
+  }, [loading, onHangup, onDecline, apiBaseUrl, callId, authToken, onAfterAction])
+
+  return (
+    <SafeAreaView edges={['top', 'left', 'right', 'bottom']} className="w-full ">
+      <View className="items-center gap-6">
+      {onBack && (
+        <Pressable
+          onPress={onBack}
+          className="absolute left-1 -top-[130px] h-12 w-12 rounded-full bg-white/10 items-center justify-center"
+        >
+          <Entypo name="chevron-left" size={24} color="white" />
+        </Pressable>
+      )}
+      <Text className="text-white text-[40px] font-extrabold -top-10">{phoneNumber}</Text>
+      {/* Timer under phone number */}
+      <Text className="text-white text-[18px] font-medium -top-8">{formatTime(elapsed)}</Text>
+      <View className="flex-row justify-center mt-[460px]">
+        <Pressable
+          disabled={!!loading}
+          onPress={runHangup}
+          onPressIn={onHangupPressIn}
+          onPressOut={onHangupPressOut}
+          onLongPress={onHangupLongPress}
+          className={`h-[80px] w-[80px] rounded-full bg-[#d7210d] items-center justify-center ${
+            loading ? 'opacity-60' : ''
+          }`}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Entypo name="phone" size={40} color="#fff" style={{ transform: [{ rotate: '225deg' }] }} />
+          )}
+        </Pressable>
+      </View>
+      {error && <Text className="mt-4 text-[14px] text-[#ff6b6b]">{error}</Text>}
+      </View>
+    </SafeAreaView>
+  )
+}
+
+export default OutgoingCallCard

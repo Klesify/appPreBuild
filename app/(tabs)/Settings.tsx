@@ -31,6 +31,12 @@ export default function Settings() {
               className="mt-14 h-12 w-12 items-center justify-center self-start rounded-full bg-[#FFFFFF1A]"
             >
              
+            </Pressable> 
+            <Pressable
+              onPress={() => router.push('/(calls)/OutgoingCall')}
+              className="mt-14 h-12 w-12 items-center justify-center self-start rounded-full bg-[#FFFFFF1A]"
+            >
+             <Text>Outgoing</Text>
             </Pressable>
        </View>
       </View>

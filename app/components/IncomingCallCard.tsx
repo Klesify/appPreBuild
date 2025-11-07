@@ -98,7 +98,7 @@ const IncomingCallCard: React.FC<IncomingCallCardProps> = ({
       {onBack && (
         <Pressable
           onPress={onBack}
-          className="absolute left-1 -top-[100px] h-12 w-12 rounded-full bg-white/10 items-center justify-center"
+          className="absolute left-1 -top-[130px] h-12 w-12 rounded-full bg-white/10 items-center justify-center"
         >
           <Entypo name="chevron-left" size={24} color="white" />
         </Pressable>
