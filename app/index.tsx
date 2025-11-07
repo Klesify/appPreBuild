@@ -14,7 +14,7 @@ export default function Index() {
   const insets = useSafeAreaInsets();
   // Hooks must be declared before any early returns
   const [imgRatio, setImgRatio] = useState(1);
-  const baseImage = images.poza1 ?? images.poza1;
+  const baseImage = images.handPhoto ?? images.poza1;
 
   const [fontsLoaded] = useFonts({
     Satoshi: require("../assets/fonts/LibreBaskerville-Regular.ttf"),

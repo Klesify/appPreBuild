@@ -103,7 +103,7 @@ const IncomingCallCard: React.FC<IncomingCallCardProps> = ({
           <Entypo name="chevron-left" size={24} color="white" />
         </Pressable>
       )}
-      <Text className="text-white text-[40px] font-extrabold -top-10">{phoneNumber}</Text>
+      <Text className="text-white text-[30px] font-regular -top-10">{phoneNumber}</Text>
       {callerName && <Text className="text-white text-[18px] font-medium">{callerName}</Text>}
       <View className="flex-row gap-36 mt-[460px]">
         <Pressable

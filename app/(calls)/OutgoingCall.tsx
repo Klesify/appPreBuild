@@ -8,10 +8,11 @@ import OutgoingCallCard from "../../app/components/OutgoingCallCard";
 
 export default function OutgoingCall() {
   const insets = useSafeAreaInsets();
-  const params = useLocalSearchParams<{ phone?: string; callId?: string; api?: string }>();
+  const params = useLocalSearchParams<{ phone?: string; callId?: string; api?: string; name?: string }>();
   const phone = params.phone ?? "+000 000 000";
   const callId = params.callId ?? undefined;
   const apiBaseUrl = params.api ?? undefined;
+  const contactName = params.name ?? undefined;
 
   const [fontsLoaded] = useFonts({
     Satoshi: require("../../assets/fonts/LibreBaskerville-Regular.ttf"),
@@ -31,6 +32,7 @@ export default function OutgoingCall() {
               phoneNumber={phone}
               callId={callId}
               apiBaseUrl={apiBaseUrl}
+              contactName={contactName}
               onBack={() => router.back()}
             />
           </View>

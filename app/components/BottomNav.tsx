@@ -8,7 +8,7 @@ export default function BottomNav() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
   const segments = useSegments()
-  const knownTabs = ['Home', 'Settings']           
+  const knownTabs = ['Home', 'Settings', 'Contacts']
   const active = segments.find(s => knownTabs.includes(s)) ?? 'Home'
 
   return (
@@ -27,9 +27,9 @@ export default function BottomNav() {
           flexDirection: 'row',
           backgroundColor: '#1f1f1f',
           paddingVertical: 10,
-          paddingHorizontal: 40,
+          paddingHorizontal: 28,
           borderRadius: 999,
-          width: 330,
+          width: 360,
           height: 70,
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -57,6 +57,15 @@ export default function BottomNav() {
         >
           <Feather name="settings" size={24} color={active==='Settings' ? 'white' : '#999'} />
           <Text style={{ color: active === 'Settings' ? 'white' : '#999', fontSize: 14 }}>Settings</Text>
+        </Pressable>
+
+        <Pressable
+          className='flex gap-1'
+          onPress={() => router.push('/(tabs)/Contacts')}
+          style={{ alignItems: 'center', paddingHorizontal: 12 }}
+        >
+          <Ionicons name="people-outline" size={24} color={active==='Contacts' ? 'white' : '#999'} />
+          <Text style={{ color: active === 'Contacts' ? 'white' : '#999', fontSize: 14 }}>Contacts</Text>
         </Pressable>
       </View>
     </View>

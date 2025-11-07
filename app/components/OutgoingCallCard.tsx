@@ -6,14 +6,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 export interface OutgoingCallCardProps {
   phoneNumber: string
   callId?: string
+  contactName?: string
   apiBaseUrl?: string
   authToken?: string
   onHangup?: () => Promise<void> | void
-  /** Backwards compat: use if onHangup not provided */
   onDecline?: () => Promise<void> | void
   onAfterAction?: () => void
   onBack?: () => void
-  // Pre-listening hooks for button interactions
   onHangupPressIn?: () => void
   onHangupPressOut?: () => void
   onHangupLongPress?: () => void
@@ -22,6 +21,7 @@ export interface OutgoingCallCardProps {
 const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
   phoneNumber,
   callId,
+  contactName,
   apiBaseUrl,
   authToken,
   onHangup,
@@ -37,7 +37,7 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
   const [elapsed, setElapsed] = useState<number>(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Start count-up timer on mount
+  
   useEffect(() => {
     const start = Date.now()
     timerRef.current = setInterval(() => {
@@ -70,10 +70,10 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
       if (onHangup) {
         await onHangup()
       } else if (onDecline) {
-        // backward compat
+       
         await onDecline()
       } else if (apiBaseUrl && callId) {
-        // Assumption: backend exposes an 'end' endpoint for active calls
+       
         const r = await fetch(`${apiBaseUrl}/calls/${callId}/end`, {
           method: 'POST',
           headers: {
@@ -105,17 +105,20 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
           <Entypo name="chevron-left" size={24} color="white" />
         </Pressable>
       )}
-      <Text className="text-white text-[40px] font-extrabold -top-10">{phoneNumber}</Text>
-      {/* Timer under phone number */}
+      {contactName && (
+        <Text className="text-white text-[38px] font-bold -top-12">{contactName}</Text>
+      )}
+      <Text className="text-white text-[30px] font-regular -top-10">{phoneNumber}</Text>
+      
       <Text className="text-white text-[18px] font-medium -top-8">{formatTime(elapsed)}</Text>
-      <View className="flex-row justify-center mt-[460px]">
+      <View className="flex-row justify-center mt-[370px]">
         <Pressable
           disabled={!!loading}
           onPress={runHangup}
           onPressIn={onHangupPressIn}
           onPressOut={onHangupPressOut}
           onLongPress={onHangupLongPress}
-          className={`h-[80px] w-[80px] rounded-full bg-[#d7210d] items-center justify-center ${
+          className={`h-[80px] w-[80px] rounded-full bg-[#d7210d] items-center justify-center  ${
             loading ? 'opacity-60' : ''
           }`}
         >
@@ -126,7 +129,7 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
           )}
         </Pressable>
       </View>
-      {error && <Text className="mt-4 text-[14px] text-[#ff6b6b]">{error}</Text>}
+      {error && <Text className="mt-4  text-[14px] text-[#ff6b6b]">{error}</Text>}
       </View>
     </SafeAreaView>
   )
