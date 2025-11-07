@@ -14,6 +14,13 @@ export interface IncomingCallCardProps {
   onDecline?: () => Promise<void> | void
   onAfterAction?: () => void
   onBack?: () => void
+  // Pre-listening hooks for button interactions
+  onAcceptPressIn?: () => void
+  onAcceptPressOut?: () => void
+  onAcceptLongPress?: () => void
+  onDeclinePressIn?: () => void
+  onDeclinePressOut?: () => void
+  onDeclineLongPress?: () => void
 }
 
 const IncomingCallCard: React.FC<IncomingCallCardProps> = ({
@@ -26,6 +33,12 @@ const IncomingCallCard: React.FC<IncomingCallCardProps> = ({
   onDecline,
   onAfterAction,
   onBack,
+  onAcceptPressIn,
+  onAcceptPressOut,
+  onAcceptLongPress,
+  onDeclinePressIn,
+  onDeclinePressOut,
+  onDeclineLongPress,
 }) => {
   const [loading, setLoading] = useState<'accept' | 'decline' | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -96,6 +109,9 @@ const IncomingCallCard: React.FC<IncomingCallCardProps> = ({
         <Pressable
           disabled={!!loading}
           onPress={() => runRequest('decline')}
+          onPressIn={onDeclinePressIn}
+          onPressOut={onDeclinePressOut}
+          onLongPress={onDeclineLongPress}
           className={`h-[80px] w-[80px] rounded-full bg-[#d7210d] items-center justify-center ${
             loading === 'decline' ? 'opacity-60' : ''
           }`}
@@ -109,6 +125,9 @@ const IncomingCallCard: React.FC<IncomingCallCardProps> = ({
         <Pressable
           disabled={!!loading}
           onPress={() => runRequest('accept')}
+          onPressIn={onAcceptPressIn}
+          onPressOut={onAcceptPressOut}
+          onLongPress={onAcceptLongPress}
           className={`h-[80px] w-[80px] rounded-full bg-[#129e27] items-center justify-center ${
             loading === 'accept' ? 'opacity-60' : ''
           }`}
