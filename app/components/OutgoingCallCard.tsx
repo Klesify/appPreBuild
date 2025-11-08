@@ -24,6 +24,7 @@ export interface OutgoingCallCardProps {
   autoPlayRing?: boolean
   ringLoop?: boolean
   ringVolume?: number
+  scamApiUrl?: string // URL to fetch scam score
 }
 
 const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
@@ -45,14 +46,56 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
   autoPlayRing = false,
   ringLoop = false,
   ringVolume = 1.0,
+  scamApiUrl = 'http://localhost:8000/detect-fraud',
 }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [elapsed, setElapsed] = useState<number>(0)
+  const [scamScore, setScamScore] = useState<number | null>(null)
+  const [riskLevel, setRiskLevel] = useState<string | null>(null)
+  const [fetchingScore, setFetchingScore] = useState<boolean>(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const soundRef = useRef<Audio.Sound | null>(null)
 
-  
+  // Fetch scam score from backend
+  useEffect(() => {
+    const fetchScamScore = async () => {
+      setFetchingScore(true)
+      try {
+        // Get the audio file from assets
+        const audioUri = require('../../assets/audios/Marcel_Mondialu_scam.wav')
+        
+        // Fetch the audio file
+        const audioResponse = await fetch(audioUri)
+        const audioBlob = await audioResponse.blob()
+        
+        // Create FormData
+        const formData = new FormData()
+        formData.append('phoneNumber', phoneNumber)
+        formData.append('audio', audioBlob, 'Marcel_Mondialu_scam.wav')
+        
+        // Send POST request
+        const response = await fetch(scamApiUrl, {
+          method: 'POST',
+          body: formData,
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          if (data.response) {
+            setScamScore(data.response.overall_scam_score)
+            setRiskLevel(data.response.risk_level)
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch scam score:', err)
+      } finally {
+        setFetchingScore(false)
+      }
+    }
+    fetchScamScore()
+  }, [scamApiUrl, phoneNumber])
+
   useEffect(() => {
     const start = Date.now()
     timerRef.current = setInterval(() => {
@@ -106,6 +149,12 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
     const mm = String(m).padStart(2, '0')
     const ss = String(s).padStart(2, '0')
     return `${mm}:${ss}`
+  }
+
+  const getScoreColor = (score: number) => {
+    if (score >= 70) return '#d7210d' // High risk - red
+    if (score >= 40) return '#ff9800' // Medium risk - orange
+    return '#4caf50' // Low risk - green
   }
 
   const runHangup = useCallback(async () => {
@@ -194,6 +243,30 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
         <Text className="text-white text-[38px] font-bold -top-12">{contactName}</Text>
       )}
       <Text className="text-white text-[30px] font-regular -top-10">{phoneNumber}</Text>
+      
+      {/* Scam Score Display */}
+      {fetchingScore ? (
+        <View className="-top-9">
+          <ActivityIndicator color="#fff" size="small" />
+        </View>
+      ) : scamScore !== null ? (
+        <View className="items-center -top-9">
+          <Text 
+            className="text-[20px] font-bold" 
+            style={{ color: getScoreColor(scamScore) }}
+          >
+            Scam Score: {scamScore}%
+          </Text>
+          {riskLevel && (
+            <Text 
+              className="text-[16px] font-semibold" 
+              style={{ color: getScoreColor(scamScore) }}
+            >
+              {riskLevel} RISK
+            </Text>
+          )}
+        </View>
+      ) : null}
       
       <Text className="text-white text-[18px] font-medium -top-8">{formatTime(elapsed)}</Text>
       <View className="flex-row justify-center mt-[370px]">
