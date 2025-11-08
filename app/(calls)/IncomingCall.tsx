@@ -8,10 +8,11 @@ import CallCard from "../../app/components/IncomingCallCard";
 
 export default function IncomingCall() {
   const insets = useSafeAreaInsets();
-  const params = useLocalSearchParams<{ phone?: string; callId?: string; api?: string }>();
+  const params = useLocalSearchParams<{ phone?: string; callId?: string; api?: string; ring?: string }>();
   const phone = params.phone ?? "+000 000 000";
   const callId = params.callId ?? undefined;
   const apiBaseUrl = params.api ?? undefined;
+  const ring = params.ring ?? undefined;
 
   const [fontsLoaded] = useFonts({
     Satoshi: require("../../assets/fonts/LibreBaskerville-Regular.ttf"),
@@ -32,6 +33,14 @@ export default function IncomingCall() {
               callId={callId}
               apiBaseUrl={apiBaseUrl}
               onBack={() => router.back()}
+              onAccept={async () => {
+                // Optionally call backend accept here, then navigate to OutgoingCall
+                router.replace({ pathname: '/(calls)/OutgoingCall', params: { phone, api: apiBaseUrl, ring } })
+              }}
+              onDecline={async () => {
+                // Optionally call backend decline here, then go Home
+                router.replace('/(tabs)/Home')
+              }}
             />
           </View>
         </View>

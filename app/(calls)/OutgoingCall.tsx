@@ -9,8 +9,8 @@ import OutgoingCallCard from "../../app/components/OutgoingCallCard";
 export default function OutgoingCall() {
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ phone?: string; api?: string; name?: string; ring?: string }>();
-  const phone = "+99012345678";
-  const apiBaseUrl = "http://localhost:8000/"
+  const phone = params.phone ?? "+000 000 000";
+  const apiBaseUrl = params.api ?? "http://localhost:8000/";
   const ring = params.ring ?? undefined;
 
   const [fontsLoaded] = useFonts({
@@ -35,6 +35,7 @@ export default function OutgoingCall() {
               ringLoop={true}
               ringVolume={1.0}
               onBack={() => router.back()}
+              onAfterAction={() => router.push('/(tabs)/Home')}
             />
           </View>
         </View>

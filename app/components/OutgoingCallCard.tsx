@@ -218,7 +218,9 @@ const OutgoingCallCard: React.FC<OutgoingCallCardProps> = ({
         const r = await fetch(url, { method: 'POST', headers, body: bodyToSend })
         if (!r.ok) throw new Error(`End call failed (${r.status})`)
       } else {
-        throw new Error('No onHangup handler or apiBaseUrl/callId provided')
+        // No backend handler/context provided; treat as a local hangup and navigate back
+        onAfterAction?.()
+        return
       }
       onAfterAction?.()
     } catch (e: any) {

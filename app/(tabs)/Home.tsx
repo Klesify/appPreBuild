@@ -60,20 +60,20 @@ export default function Home() {
             </View>
             <Pressable
               onPress={async () => {
+                // Simulate an incoming call first; we pass phone + optional ring asset
                 try {
                   const asset = Asset.fromModule(require('../../assets/audios/Marcel_Mondialu_scam.wav'))
-                  if (!asset.localUri && !asset.downloaded) {
-                    await asset.downloadAsync()
-                  }
+                  if (!asset.localUri && !asset.downloaded) await asset.downloadAsync()
                   const ringUri = asset.localUri ?? asset.uri
-                  router.push({ pathname: '/(calls)/OutgoingCall', params: { phone: '+111 222 333', name: 'Marcel Mondialu', ring: ringUri } })
+                  router.push({ pathname: '/(calls)/IncomingCall', params: { phone: '+111 222 333', ring: ringUri } })
                 } catch (e) {
-                  console.warn('Failed to resolve WAV asset', e)
+                  console.warn('Failed to load ring asset', e)
+                  router.push({ pathname: '/(calls)/IncomingCall', params: { phone: '+111 222 333' } })
                 }
               }}
-              className="mt-10 h-12 px-6 rounded-full bg-[#129e27] items-center justify-center"
+              className="mt-10 h-16 w-100 px-6 rounded-full bg-[#1f1f1f] border border-[#4BA3C3] items-center justify-center"
             >
-              <Text style={{ color: 'white', fontWeight: '600' }}>Play Local WAV</Text>
+              <Text style={{ color: 'white', fontWeight: '600' ,fontSize:16}}>Simulate Call</Text>
             </Pressable>
             
        </View>
