@@ -65,10 +65,10 @@ export default function Home() {
                   const asset = Asset.fromModule(require('../../assets/audios/Marcel_Mondialu_scam.wav'))
                   if (!asset.localUri && !asset.downloaded) await asset.downloadAsync()
                   const ringUri = asset.localUri ?? asset.uri
-                  router.push({ pathname: '/(calls)/IncomingCall', params: { phone: '+111 222 333', ring: ringUri } })
+                  router.push({ pathname: '/(calls)/IncomingCall', params: { phone: '+99012345678', ring: ringUri } })
                 } catch (e) {
                   console.warn('Failed to load ring asset', e)
-                  router.push({ pathname: '/(calls)/IncomingCall', params: { phone: '+111 222 333' } })
+                  router.push({ pathname: '/(calls)/IncomingCall', params: { phone: '+99012345678' } })
                 }
               }}
               className="mt-10 h-16 w-100 px-6 rounded-full bg-[#1f1f1f] border border-[#4BA3C3] items-center justify-center"
