@@ -5,14 +5,13 @@ import { StatusBar } from "expo-status-bar";
 import { View } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import OutgoingCallCard from "../../app/components/OutgoingCallCard";
-import { API_BASE_URL, AUTH_TOKEN } from "../../constants/config";
 
 export default function OutgoingCall() {
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ phone?: string; callId?: string; api?: string; name?: string; ring?: string }>();
   const phone = params.phone ?? "+000 000 000";
   const callId = params.callId ?? undefined;
-  const apiBaseUrl = (params.api as string | undefined) ?? API_BASE_URL;
+  const apiBaseUrl = params.api ?? undefined;
   const contactName = params.name ?? undefined;
   const ring = params.ring ?? undefined;
 
@@ -34,13 +33,11 @@ export default function OutgoingCall() {
               phoneNumber={phone}
               callId={callId}
               apiBaseUrl={apiBaseUrl}
-              authToken={AUTH_TOKEN}
               contactName={contactName}
               ringUri={ring}
               autoPlayRing={!!ring}
               ringLoop={true}
               ringVolume={1.0}
-              sendRingFile={!!ring}
               onBack={() => router.back()}
             />
           </View>
